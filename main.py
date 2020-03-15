@@ -31,63 +31,48 @@ def get_members():
         return members
 
 
-def get_tasks():
+def get_tasks_and_occurences():
     """ Returns the task list from the file """
     with open(const.f_path_tasks, "r") as data_tasks:
         tasks = []
+        occurences = []
         line = [x.strip() for x in data_tasks.readline().split()]
-        while True:
-            if not line:
-                break
+        while line:
+            occurence = [x.strip() for x in data_tasks.readline().split(", ")]
             tasks.append({
                 "name": line[0],
                 "person": line[1],
-                "occurence": [x.strip() for x in data_tasks.readline().split(", ")]
+                "occurence": occurence
             })
+            occurences.extend(occurence)
             line = [x.strip() for x in data_tasks.readline().split()]
         data_tasks.close()
-        return tasks
-
-
-def init_periods_info():
-    """ Init the periods_info """
-    periods_info = []
-    with open(const.f_path_periods, "r") as data_periods:
-        line = data_periods.readline().strip()
-        while line:
-            periods_info.append({
-                "name": line,
-                "busy_members": [x.strip() for x in data_periods.readline().split(", ")]
-            })
-            line = data_periods.readline().strip()
-        data_periods.close()
-        return periods_info
-
+        return (tasks,list(dict.fromkeys(occurences)))
 
 def assign_tasks():
     """ Assign tasks to the members """
     # todo : Essayer qu’une personne ne fasse pas plusieurs tâches d’affilée
     # todo : Essayer d’éviter un maximum qu’une personne fasse plusieurs fois la même tâche
     members = get_members()
-    tasks = get_tasks()
-    periods_info = init_periods_info()
+    tuple_tasks_occurences = get_tasks_and_occurences()
+    periods_info = tuple_tasks_occurences[1]
+    tasks = tuple_tasks_occurences[0]
     attributed_tasks = []
     nbTasks = 0
 
     for period in periods_info:
         temp_task = []
         for task in tasks:
-            if period["name"] in task["occurence"]:
+            if period in task["occurence"]:
                 temp_members = []
 
                 i = 0
                 while i < int(task["person"]):
                     member = random.choice(members)
-                    while member in period["busy_members"] or int(len(member["tasks"]) > nbTasks/int(len(members))):
+                    while int(len(member["tasks"]) > nbTasks/int(len(members))):
                         member = random.choice(members)
 
                     nbTasks += 1
-                    period["busy_members"].append(member)
                     members[members.index(member)]["tasks"].append(
                         task["name"])
                     temp_members.append(member["name"])
@@ -98,7 +83,7 @@ def assign_tasks():
                     "members": temp_members
                 })
         attributed_tasks.append({
-            "period": period["name"],
+            "period": period,
             "tasks": temp_task
         })
     create_output(attributed_tasks)
