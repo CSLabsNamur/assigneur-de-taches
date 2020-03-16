@@ -68,7 +68,7 @@ def choose_member(task_name,period,members,member_periods_prec):
     # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
     members_available_not_in_row = members_available.copy()
     for member_not_in_row in members_available:
-        if(member_not_in_row["name"] in member_periods_prec) or (task_name in member_available["tasks"]):
+        if(member_not_in_row["name"] in member_periods_prec) or (task_name in member_not_in_row["tasks"]):
             members_available_not_in_row.remove(member_not_in_row)
     
     if(len (members_available_not_in_row) == 0):
