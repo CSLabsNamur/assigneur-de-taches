@@ -20,13 +20,16 @@ def create_output(attributed_tasks):
 def get_members():
     """ Returns the member list from the file """
     with open(const.f_path_members, "r") as data_members:
-        temp_members = [x.strip() for x in data_members.readlines()]
         members = []
-        for member in temp_members:
+        for line in data_members:
+            occurence = []
+            member_data = [x.strip() for x in line.split("|")]
+            if(len(member_data) >1):
+                occurence = [x.strip() for x in member_data[1].split(",")]
             members.append({
-                "name": member,
+                "name": member_data[0],
                 "tasks": [],
-                "occurence":[]
+                "occurence":occurence
             })
         data_members.close()
         return members
@@ -55,7 +58,7 @@ def choose_member(task_name,period,members,member_periods_prec):
     sum_nbTask = 0
     # Supprime les membres qui sont déja affectés à une tache pour la période
     for member in members:
-        sum_nbTask += len(member["tasks"])
+        sum_nbTask += len(member["occurence"])
         if(period in member["occurence"]):
             members_available.remove(member)
     # Supprime les membres qui sont au dessus de la moyenne de taches affectées
@@ -64,6 +67,8 @@ def choose_member(task_name,period,members,member_periods_prec):
     for member_available in members_available_temp:
         if((len(member_available["tasks"]) > mean_nbTask)):
             members_available.remove(member_available)
+    if(len(members_available) == 0):
+        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la période: {period}")
     # Evite;un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
     # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
     members_available_not_in_row = members_available.copy()
