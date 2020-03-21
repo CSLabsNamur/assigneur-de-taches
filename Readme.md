@@ -3,12 +3,16 @@
 
 ## Requirements
 Le programme nécéssite python pour être lancé.
+
+Pour lancer le random, lancez le fichier `Start.bat` ou
 ```
+cd src
 python main.py
 ```
 
+
 ## Structure du projet
- - `membres.txt` contient la liste des membres
+Le code et les différents fichiers nécessaires se trouvent dans le dossier `src`
+ - `membres.txt` contient la liste des membres ainsi que les périodes où ils ne sont pas disponibles
  - `task.txt` contient la liste des tâches à effectuer
- - `periods.txt` contient la liste des périodes avec pour chaque période la liste des membres indisponibles pendant celle-ci
  - `output.txt` contient la sortie du programme
