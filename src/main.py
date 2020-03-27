@@ -1,10 +1,13 @@
 import random
-import const
+import src.const as const
 
 
 def create_output(attributed_tasks):
     """ Create the output file to visualize the information """
-    # todo : L’application génère un pdf avec le programme du week-end : pour chaque moment et pour chaque tâche, qui doit la réaliser
+
+    # TODO: L’application génère un pdf avec le programme du week-end : pour chaque moment et pour chaque tâche,
+    #  qui doit la réaliser
+
     with open(const.f_path_output, "w") as file_output:
         for period in attributed_tasks:
             file_output.write("==================== " +
@@ -22,86 +25,90 @@ def get_members():
     with open(const.f_path_members, "r") as data_members:
         members = []
         for line in data_members:
-            occurence = []
+            occurrence = []
             member_data = [x.strip() for x in line.split("|")]
-            if(len(member_data) >1):
-                occurence = [x.strip() for x in member_data[1].split(",")]
+            if len(member_data) > 1:
+                occurrence = [x.strip() for x in member_data[1].split(",")]
             members.append({
                 "name": member_data[0],
                 "tasks": [],
-                "occurence":occurence
+                "occurrence": occurrence
             })
         data_members.close()
         return members
 
 
-def get_tasks_and_occurences():
+def get_tasks_and_occurrences():
     """ Returns the task list from the file """
     with open(const.f_path_tasks, "r") as data_tasks:
         tasks = []
-        occurences = []
+        occurrences = []
         line = [x.strip() for x in data_tasks.readline().split()]
         while line:
-            occurence = [x.strip() for x in data_tasks.readline().split(", ")]
+            occurrence = [x.strip() for x in data_tasks.readline().split(", ")]
             tasks.append({
                 "name": line[0],
                 "person": line[1],
-                "occurence": occurence
+                "occurrence": occurrence
             })
-            occurences.extend(occurence)
+            occurrences.extend(occurrence)
             line = [x.strip() for x in data_tasks.readline().split()]
         data_tasks.close()
-        return (tasks,list(dict.fromkeys(occurences)))
+        return tasks, list(dict.fromkeys(occurrences))
 
-def choose_member(task_name,period,members,member_periods_prec):
+
+def choose_member(task_name, period, members, member_periods_prec):
+    """
+    # TODO: Spec
+    """
     members_available = members.copy()
-    sum_nbTask = 0
+    sum_nb_task = 0
     # Supprime les membres qui sont déja affectés à une tache pour la période
     for member in members:
-        sum_nbTask += len(member["occurence"])
-        if(period in member["occurence"]):
+        sum_nb_task += len(member["occurrence"])
+        if period in member["occurrence"]:
             members_available.remove(member)
     # Supprime les membres qui sont au dessus de la moyenne de taches affectées
-    mean_nbTask = sum_nbTask / len(members)
+    mean_nb_task = sum_nb_task / len(members)
     members_available_temp = members_available.copy()
     for member_available in members_available_temp:
-        if((len(member_available["tasks"]) > mean_nbTask)):
+        if len(member_available["tasks"]) > mean_nb_task:
             members_available.remove(member_available)
-    if(len(members_available) == 0):
+    if len(members_available) == 0:
         raise Exception(f"Pas assez de membres pours assigner toutes les taches de la période: {period}")
-    # Evite;un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
+    # Évite un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
     # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
     members_available_not_in_row = members_available.copy()
     for member_not_in_row in members_available:
-        if(member_not_in_row["name"] in member_periods_prec) or (task_name in member_not_in_row["tasks"]):
+        if (member_not_in_row["name"] in member_periods_prec) or (task_name in member_not_in_row["tasks"]):
             members_available_not_in_row.remove(member_not_in_row)
-    
-    if(len (members_available_not_in_row) == 0):
+
+    if len(members_available_not_in_row) == 0:
         return random.choice(members_available)
     else:
         return random.choice(members_available_not_in_row)
-    
+
 
 def assign_tasks():
     """ Assign tasks to the members """
     members = get_members()
-    tuple_tasks_occurences = get_tasks_and_occurences()
-    periods_info = tuple_tasks_occurences[1]
-    tasks = tuple_tasks_occurences[0]
+    tuple_tasks_occurrences = get_tasks_and_occurrences()
+    periods_info = tuple_tasks_occurrences[1]
+    tasks = tuple_tasks_occurrences[0]
     attributed_tasks = []
     member_period_prec = []
 
     for period in periods_info:
         temp_task = []
         for task in tasks:
-            if period in task["occurence"]:
+            if period in task["occurrence"]:
                 temp_members = []
                 i = 0
                 while i < int(task["person"]):
-                    member = choose_member(task["name"],period,members,member_period_prec)
+                    member = choose_member(task["name"], period, members, member_period_prec)
                     members[members.index(member)]["tasks"].append(
                         task["name"])
-                    members[members.index(member)]["occurence"].append(
+                    members[members.index(member)]["occurrence"].append(
                         period)
                     temp_members.append(member["name"])
                     i += 1
@@ -117,5 +124,6 @@ def assign_tasks():
         for person in temp_task:
             member_period_prec.extend(person["members"])
     create_output(attributed_tasks)
+
 
 assign_tasks()
