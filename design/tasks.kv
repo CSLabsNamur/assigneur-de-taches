@@ -1,14 +1,4 @@
-#:import utils kivy.utils
-
-<Members>:
-    canvas.before:
-        Color:
-            rgba: utils.get_color_from_hex(app.bg_color)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-
+<Tasks>:
     BoxLayout:
         orientation: "horizontal"
 
@@ -16,8 +6,9 @@
             orientation: "vertical"
 
             AnchorLayout:
-                Label:
-                    text: "Logo CSLabs\nTODO: Modifier la taille"
+                Image:
+                    source: "../design/logo.png"
+                    size: self.texture_size
 
             AnchorLayout:
                 BoxLayout:
@@ -26,10 +17,13 @@
 
                     Button:
                         text: "Members"
+                        on_press: app.sm.switch_to(app.members)
                     Button:
                         text: "Tasks"
+                        on_press: app.sm.switch_to(app.tasks)
                     Button:
                         text: "Output"
+                        on_press: app.sm.switch_to(app.output)
 
             AnchorLayout:
                 BoxLayout:
@@ -41,12 +35,11 @@
                     Button:
                         text: "[b]Generate[/b]"
                         markup: True
-                        on_press: print(self.text)
 
 
         BoxLayout:
             Label:
-                text: "2"
+                text: "2\nTASKS"
 
 
         BoxLayout:

@@ -1,9 +1,15 @@
+import inspect
 import random
+
 import const as const
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.config import Config
-from kivy.app import App
+import sys
 from kivy import require
+from kivy.app import App
+from kivy.config import Config
+from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.utils import get_color_from_hex
 
 
 class Main(App):
@@ -11,11 +17,14 @@ class Main(App):
     Main class of the GUI app.
 
     Inheritance: Kivy.app.App
-    Version: 1.0.0 (03/04/2020)
+    Version: 1.1.0 (04/04/2020)
     """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bg_color = "#3d3d3d"
+        self.bg_color = "#3d3d3d"  # Couleur de fond en hex, qui est convertie et chargée plus tard.
+
+        self.title = "CSLabs - Assigneur de tâches"  # Titre de la fenêtre
 
     def build(self):
         """
@@ -23,8 +32,8 @@ class Main(App):
 
         Version: 1.1.0 (04/04/2020)
         """
-        self.sm = ScreenManager()
-        self.members = Members(name="Members")
+        self.sm = ScreenManager(transition=SlideTransition())  # TODO: Définir l'animation de transition voulue
+        self.members = Members(name="Members")  # Création des menus
         self.tasks = Tasks(name="Tasks")
         self.output = Output(name="Output")
 
@@ -42,6 +51,10 @@ class Members(Screen):
     Inheritance: Kivy.uix.screenmanager.Screen
     Version: 1.0.0 (03/04/2020)
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     pass
 
 
@@ -52,6 +65,10 @@ class Tasks(Screen):
     Inheritance: Kivy.uix.screenmanager.Screen
     Version: 1.0.0 (03/04/2020)
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     pass
 
 
@@ -62,6 +79,10 @@ class Output(Screen):
     Inheritance: Kivy.uix.screenmanager.Screen
     Version: 1.0.0 (03/04/2020)
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     pass
 
 
@@ -188,7 +209,11 @@ def assign_tasks():
 
 
 if __name__ == "__main__":
-    require("1.11.1")
-    Config.set('input', 'mouse', 'mouse,disable_multitouch')
+    require("1.11.1")  # Version minimale requise
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')  # Empêcher la gestion multitouch par défaut de Kivy
+    [Builder.load_file("../design/{}.kv".format(menu.lower()))
+     for menu, obj in inspect.getmembers(sys.modules[__name__])
+     if inspect.isclass(obj) and issubclass(obj, Screen) and menu != "Screen"]  # Énumérer toutes les classes existantes dans ce module, ne prendre que les descendantes de kivy.uix.screenmanager.Screen sauf lui-même et charger le design kv correspondant.
+    Window.clearcolor = get_color_from_hex(Main().bg_color)  # Chargement de la couleur de fond
 
-    Main().run()
+    Main().run()  # Lancement de la GUI

@@ -1,0 +1,62 @@
+# TODO: Bien s'emmerder pour trouver un moyen de faire des bords arrondis sur les boutons et la search box
+
+<Members>:
+    BoxLayout:
+        orientation: "horizontal"
+
+        BoxLayout:  # 1st box
+            orientation: "vertical"
+
+            AnchorLayout:  # Logo
+                Image:
+                    source: "../design/logo.png"
+                    size: self.texture_size
+
+            AnchorLayout:  # Menus
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 0.8, 0.8
+
+                    Button:
+                        text: "Members"
+                        on_press: app.sm.switch_to(app.members)
+                    Button:
+                        text: "Tasks"
+                        on_press: app.sm.switch_to(app.tasks)
+                    Button:
+                        text: "Output"
+                        on_press: app.sm.switch_to(app.output)
+
+            AnchorLayout:  # Tools
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 0.8, 0.8
+
+                    Button:
+                        text: "Add Member"
+                    Button:
+                        text: "[b]Generate[/b]"
+                        markup: True
+
+
+        BoxLayout:  # 2nd box
+            AnchorLayout:  # Title TODO: TAILLE
+                anchor_y: "top"
+
+                Label:
+                    font_size: 40
+                    text: "Assigneur de tâches"
+
+            BoxLayout:
+
+
+
+        BoxLayout:  # 3rd box
+            AnchorLayout:  # Search Box
+                anchor_y: "top"
+
+                TextInput:
+                    size_hint_y: None
+                    height: 30
+                    hint_text: "Search..."
+                    multiline: False
