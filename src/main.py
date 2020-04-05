@@ -1,7 +1,71 @@
 import random
-import src.const as const
+import const as const
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.config import Config
+from kivy.app import App
+from kivy import require
 
 
+class Main(App):
+    """
+    Main class of the GUI app.
+
+    Inheritance: Kivy.app.App
+    Version: 1.0.0 (03/04/2020)
+    """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bg_color = "#3d3d3d"
+
+    def build(self):
+        """
+        Main function of the GUI app.
+
+        Version: 1.1.0 (04/04/2020)
+        """
+        self.sm = ScreenManager()
+        self.members = Members(name="Members")
+        self.tasks = Tasks(name="Tasks")
+        self.output = Output(name="Output")
+
+        self.sm.add_widget(self.members)
+        self.sm.add_widget(self.tasks)
+        self.sm.add_widget(self.output)
+
+        return self.sm
+
+
+class Members(Screen):
+    """
+    Members menu.
+
+    Inheritance: Kivy.uix.screenmanager.Screen
+    Version: 1.0.0 (03/04/2020)
+    """
+    pass
+
+
+class Tasks(Screen):
+    """
+    Tasks menu.
+
+    Inheritance: Kivy.uix.screenmanager.Screen
+    Version: 1.0.0 (03/04/2020)
+    """
+    pass
+
+
+class Output(Screen):
+    """
+    Output menu.
+
+    Inheritance: Kivy.uix.screenmanager.Screen
+    Version: 1.0.0 (03/04/2020)
+    """
+    pass
+
+
+# ====== Logic section ======= #
 def create_output(attributed_tasks):
     """ Create the output file to visualize the information """
 
@@ -10,8 +74,7 @@ def create_output(attributed_tasks):
 
     with open(const.f_path_output, "w") as file_output:
         for period in attributed_tasks:
-            file_output.write("==================== " +
-                              period["period"].upper() + " ====================\n")
+            file_output.write("==================== " + period["period"].upper() + " ====================\n")
             for task in period["tasks"]:
                 file_output.write("Task : " + task["name"] + "\n")
                 file_output.write(
@@ -106,10 +169,8 @@ def assign_tasks():
                 i = 0
                 while i < int(task["person"]):
                     member = choose_member(task["name"], period, members, member_period_prec)
-                    members[members.index(member)]["tasks"].append(
-                        task["name"])
-                    members[members.index(member)]["occurrence"].append(
-                        period)
+                    members[members.index(member)]["tasks"].append(task["name"])
+                    members[members.index(member)]["occurrence"].append(period)
                     temp_members.append(member["name"])
                     i += 1
                 temp_task.append({
@@ -126,4 +187,8 @@ def assign_tasks():
     create_output(attributed_tasks)
 
 
-assign_tasks()
+if __name__ == "__main__":
+    require("1.11.1")
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
+
+    Main().run()

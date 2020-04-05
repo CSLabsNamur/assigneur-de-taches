@@ -8,6 +8,7 @@ idna==2.9
 importlib-metadata==1.6.0
 Kivy==1.11.1
 kivy-deps.angle==0.1.10
+kivy-deps.glew==0.1.12
 kivy-deps.sdl2==0.1.23
 Kivy-examples==1.11.1
 Kivy-Garden==0.1.4

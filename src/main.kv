@@ -1,0 +1,54 @@
+#:import utils kivy.utils
+
+<Members>:
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex(app.bg_color)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+    BoxLayout:
+        orientation: "horizontal"
+
+        BoxLayout:
+            orientation: "vertical"
+
+            AnchorLayout:
+                Label:
+                    text: "Logo CSLabs\nTODO: Modifier la taille"
+
+            AnchorLayout:
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 0.8, 0.8
+
+                    Button:
+                        text: "Members"
+                    Button:
+                        text: "Tasks"
+                    Button:
+                        text: "Output"
+
+            AnchorLayout:
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint: 0.8, 0.8
+
+                    Button:
+                        text: "Add Member"
+                    Button:
+                        text: "[b]Generate[/b]"
+                        markup: True
+                        on_press: print(self.text)
+
+
+        BoxLayout:
+            Label:
+                text: "2"
+
+
+        BoxLayout:
+            Label:
+                text: "3"
