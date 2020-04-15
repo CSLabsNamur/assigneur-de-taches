@@ -1,69 +1,6 @@
 import random
 import const as const
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.config import Config
-from kivy.app import App
-from kivy import require
-
-
-class Main(App):
-    """
-    Main class of the GUI app.
-
-    Inheritance: Kivy.app.App
-    Version: 1.0.0 (03/04/2020)
-    """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.bg_color = "#3d3d3d"
-
-    def build(self):
-        """
-        Main function of the GUI app.
-
-        Version: 1.1.0 (04/04/2020)
-        """
-        self.sm = ScreenManager()
-        self.members = Members(name="Members")
-        self.tasks = Tasks(name="Tasks")
-        self.output = Output(name="Output")
-
-        self.sm.add_widget(self.members)
-        self.sm.add_widget(self.tasks)
-        self.sm.add_widget(self.output)
-
-        return self.sm
-
-
-class Members(Screen):
-    """
-    Members menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
-
-class Tasks(Screen):
-    """
-    Tasks menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
-
-class Output(Screen):
-    """
-    Output menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
+import os
 
 # ====== Logic section ======= #
 def create_output(attributed_tasks):
@@ -71,7 +8,7 @@ def create_output(attributed_tasks):
 
     # TODO: L’application génère un pdf avec le programme du week-end : pour chaque moment et pour chaque tâche,
     #  qui doit la réaliser
-
+    os.makedirs(os.path.dirname(const.f_path_output), exist_ok=True)
     with open(const.f_path_output, "w") as file_output:
         for period in attributed_tasks:
             file_output.write("==================== " + period["period"].upper() + " ====================\n")
@@ -187,8 +124,4 @@ def assign_tasks():
     create_output(attributed_tasks)
 
 
-if __name__ == "__main__":
-    require("1.11.1")
-    Config.set('input', 'mouse', 'mouse,disable_multitouch')
-
-    Main().run()
+assign_tasks()
