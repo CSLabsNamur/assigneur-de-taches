@@ -2,17 +2,22 @@
 **Objectif de base du projet :** permettre de choisir aléatoirement les tâches de chacun lors d’un week-end CSLabs, en fonction de certaines contraintes. Ne pas hésiter à élargir les exigences.
 
 ## Requirements
-Le programme nécéssite python pour être lancé.
+| Programme | version |
+|---|---|
+| [python](https://www.python.org/downloads/) | 3.8.1 |
+| [nodejs](https://nodejs.org/en/) | 12.16.2 |
+| [npm](https://www.npmjs.com/get-npm) | 6.13.4 |
 
-Pour lancer le random, lancez le fichier `Start.bat` ou
+## Installation
+Pour installer électron, lancez le fichier `init.bat` ou
 ```
-cd src
-python main.py
+cd src/
+npm install
 ```
 
-
-## Structure du projet
-Le code et les différents fichiers nécessaires se trouvent dans le dossier `src`
- - `membres.txt` contient la liste des membres ainsi que les périodes où ils ne sont pas disponibles
- - `task.txt` contient la liste des tâches à effectuer
- - `output.txt` contient la sortie du programme
+## Lancement de l'application
+Pour lancer l'application, lancez le fichier `Start.bat` ou
+```
+cd src/
+npm start
+```
