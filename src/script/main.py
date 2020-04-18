@@ -1,15 +1,15 @@
 import random
-import const as const
+import json
 import os
+import const as const
 
 # ====== Logic section ======= #
 def create_output(attributed_tasks):
     """ Create the output file to visualize the information """
 
-    # TODO: L’application génère un pdf avec le programme du week-end : pour chaque moment et pour chaque tâche,
-    #  qui doit la réaliser
-    os.makedirs(os.path.dirname(const.f_path_output), exist_ok=True)
-    with open(const.f_path_output, "w") as file_output:
+    #Output TXT
+    os.makedirs(os.path.dirname(const.f_path_output_txt), exist_ok=True)
+    with open(const.f_path_output_txt, "w") as file_output:
         for period in attributed_tasks:
             file_output.write("==================== " + period["period"].upper() + " ====================\n")
             for task in period["tasks"]:
@@ -17,6 +17,11 @@ def create_output(attributed_tasks):
                 file_output.write(
                     "Members : " + ", ".join([str(x) for x in task["members"]]) + "\n\n")
 
+        file_output.close()
+        
+    #Output JSON
+    with open(const.f_path_output_json, "w") as file_output:
+        file_output.write(json.dumps(attributed_tasks))
         file_output.close()
 
 
