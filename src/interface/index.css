@@ -1,0 +1,9 @@
+#leftBox{
+    margin:2%;
+}
+
+#buttonBox{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

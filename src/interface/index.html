@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <script src="function.js"></script>
-  </head>
-  <body>
-    <button onclick="generateOutput()">Start generate</button>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Assigneur de tâches</title>
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <script type="text/javascript" src="function.js"></script>
+</head>
+
+<body>
+  <div class="row">
+    <div class="col-2" id="leftBox">
+      <img class="img-fluid" src="../pictures/logo.png" alt="Logo CSLabs" />
+      <div id="buttonBox">
+        <button onclick="generateOutput()" type="button" class="btn btn-secondary m-2">Start generate</button>
+        <button onclick="openMembersFile()" type="button" class="btn btn-secondary m-2">Modify members</button>
+        <button onclick="openTasksFile()" type="button" class="btn btn-secondary m-2">Modify tasks</button>
+      </div>
+    </div>
+
+    <div class="col-12" id="rightBox">
+
+    </div>
+  </div>
+
+</body>
+
 </html>

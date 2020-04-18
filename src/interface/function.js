@@ -1,18 +1,30 @@
-function generateOutput() {
-  const path = require("path");
-  const exec = require("child_process").execFile;
-  global.appRoot = path.resolve(__dirname);
+const path = require("path");
+const appRoot = path.resolve(__dirname);
 
-  console.log(
-    String.raw`D:\Dossier\Document\GitHub\assigneur-de-taches\src\electron-interface\Start.bat`
-  );
-  let pathBat = `${appRoot.split("\\interface")[0]}\\Start.bat`;
-  console.log(pathBat);
-  exec(pathBat, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err);
+function openFile(exec, file, message){
+  exec(file, (err, stdout, stderr) =>  {
+    if(err) {
+      alert(message);
+      console.log(err)
       return;
     }
-    console.log(stdout);
   });
+}
+
+function generateOutput() {
+  const exec = require("child_process").execFile;
+  const pathBat = `${appRoot.split("\\interface")[0]}\\script\\script.bat`;
+  openFile(exec, pathBat, 'Cannot generate output');
+}
+
+function openMembersFile() {
+  const exec = require("child_process").exec;
+  const pathFile = `${appRoot.split("\\interface")[0]}\\input\\members.txt`;
+  openFile(exec, pathFile, 'Cannot open members file');
+}
+
+function openTasksFile() {
+  const exec = require("child_process").exec;
+  const pathFile = `${appRoot.split("\\interface")[0]}\\input\\task.txt`;
+  openFile(exec, pathFile, 'Cannot open tasks file');
 }
