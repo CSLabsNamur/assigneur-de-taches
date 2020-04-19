@@ -1,30 +1,93 @@
 const path = require("path");
-const appRoot = path.resolve(__dirname);
+const fs = require('fs')
 
-function openFile(exec, file, message){
-  exec(file, (err, stdout, stderr) =>  {
-    if(err) {
+const appRoot = path.resolve(__dirname);
+const projectPath = `${appRoot.split("\\interface")[0]}`;
+const exec = require("child_process").exec;
+
+function openFile(file, message, fct) {
+  exec(projectPath + file, (err, stdout, stderr) => {
+    if (err) {
       alert(message);
       console.log(err)
       return;
     }
+    fct();
   });
 }
 
 function generateOutput() {
-  const exec = require("child_process").execFile;
-  const pathBat = `${appRoot.split("\\interface")[0]}\\script\\script.bat`;
-  openFile(exec, pathBat, 'Cannot generate output');
+  openFile(`\\script\\script.bat`, 'Cannot generate output', printOutput);
 }
 
 function openMembersFile() {
-  const exec = require("child_process").exec;
-  const pathFile = `${appRoot.split("\\interface")[0]}\\input\\members.txt`;
-  openFile(exec, pathFile, 'Cannot open members file');
+  openFile(`\\input\\members.txt`, 'Cannot open members file');
 }
 
 function openTasksFile() {
-  const exec = require("child_process").exec;
-  const pathFile = `${appRoot.split("\\interface")[0]}\\input\\task.txt`;
-  openFile(exec, pathFile, 'Cannot open tasks file');
+  openFile(`\\input\\task.txt`, 'Cannot open tasks file');
+}
+
+function manageOutput() {
+  fs.readFile(projectPath + `\\output\\output.json`, (err, data) => {
+    if (err) {
+      console.log('Pas de fichier')
+      let container = document.getElementById('generateButtonContainer');
+      let button = document.createElement('button');
+      button.innerHTML = 'Generate output';
+      button.addEventListener('click', generateOutput);
+      button.id = 'generateOutputButton';
+      button.classList.add('btn');
+      button.classList.add('btn-danger');
+      container.appendChild(button);
+      return;
+    } else {
+      printOutput();
+    }
+  });
+}
+
+function printOutput() {
+  let container = document.getElementById('generateButtonContainer');
+  let button = document.getElementById('generateOutputButton');
+  if (button != undefined) container.removeChild(button);
+
+  fs.readFile(projectPath + `\\output\\output.json`, (err, data) => {
+    if (err) {
+      alert('Cannot open output file')
+      return;
+    }
+    const attributed_task = JSON.parse(data);
+
+    let container = document.getElementById('outputContainer');
+
+    container.innerHTML = "";
+
+    let periodNameElem;
+    let taskNameElem;
+    let listElem;
+    let memberElem;
+
+    for (period of attributed_task) {
+      periodNameElem = document.createElement('h1');
+      periodNameElem.innerHTML = period.period;
+      periodNameElem.classList.add('periodName')
+      periodNameElem.classList.add('display-4')
+      container.appendChild(periodNameElem);
+      for(task of period.tasks) {
+        taskNameElem = document.createElement('h2');
+        taskNameElem.innerHTML = task.name;
+        taskNameElem.classList.add('taskName');
+        container.appendChild(taskNameElem);
+
+        listElem = document.createElement('ul');
+        container.appendChild(listElem);
+        for(member of task.members) {
+          memberElem = document.createElement('li');
+          memberElem.innerHTML = member;
+          listElem.appendChild(memberElem);
+        }
+      }
+    }
+  });
 }

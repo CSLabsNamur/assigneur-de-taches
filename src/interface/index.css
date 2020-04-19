@@ -7,3 +7,16 @@
     flex-direction: column;
     justify-content: flex-start;
 }
+
+#title{
+    margin-top: 1%;
+    text-align: center;
+}
+
+#generateButtonContainer{
+    text-align: center;
+}
+
+.periodName{
+    text-align: center;
+}
