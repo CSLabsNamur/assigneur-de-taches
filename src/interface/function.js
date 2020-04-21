@@ -55,6 +55,14 @@ function manageOutput() {
   });
 }
 
+function toggleDarkMode(){
+  document.body.classList.contains('darkMode') ?
+    document.body.classList.remove('darkMode'):
+    document.body.classList.add('darkMode');
+}
+
+function strUcFirst(a){return (a+'').charAt(0).toUpperCase()+a.substr(1);}
+
 function printOutput() {
   let container = document.getElementById("generateButtonContainer");
   let button = document.getElementById("generateOutputButton");
@@ -80,7 +88,7 @@ function printOutput() {
 
     for (period of attributed_task) {
       periodNameElem = document.createElement("h1");
-      periodNameElem.innerHTML = period.period;
+      periodNameElem.innerHTML = strUcFirst(period.period);
       periodNameElem.classList.add("periodName");
       periodNameElem.classList.add("display-4");
 

@@ -13,7 +13,10 @@
   },
   "build": {
     "appId": "be.cslabs",
-    "extraResources": ["./input/**","./script/**"],
+    "extraResources": [
+      "./input/**",
+      "./script/**"
+    ],
     "linux": {
       "target": [
         "AppImage",
