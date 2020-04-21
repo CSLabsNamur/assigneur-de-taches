@@ -20,3 +20,15 @@
 .periodName{
     text-align: center;
 }
+
+.taskListContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.taskContainer{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

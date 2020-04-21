@@ -5,8 +5,8 @@ require('electron-reload')(__dirname);
 function createWindow () {
   // Cree la fenetre du navigateur.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1080,
+    height: 720,
     webPreferences: {
       nodeIntegration: true
     }

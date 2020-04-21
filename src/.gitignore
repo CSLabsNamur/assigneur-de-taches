@@ -69,3 +69,4 @@ ts-gen
 
 output/
 __pycache__/
+build/

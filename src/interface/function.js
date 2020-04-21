@@ -64,6 +64,8 @@ function printOutput() {
     container.innerHTML = "";
 
     let periodNameElem;
+    let taskListContainer;
+    let taskContainer;
     let taskNameElem;
     let listElem;
     let memberElem;
@@ -73,16 +75,30 @@ function printOutput() {
       periodNameElem.innerHTML = period.period;
       periodNameElem.classList.add('periodName')
       periodNameElem.classList.add('display-4')
+
       container.appendChild(periodNameElem);
-      for(task of period.tasks) {
+
+      taskListContainer = document.createElement('div');
+      taskListContainer.classList.add('taskListContainer');
+
+      container.appendChild(taskListContainer);
+
+      for (task of period.tasks) {
         taskNameElem = document.createElement('h2');
         taskNameElem.innerHTML = task.name;
         taskNameElem.classList.add('taskName');
-        container.appendChild(taskNameElem);
+
+        taskContainer = document.createElement('div');
+        taskContainer.classList.add('taskContainer');
+
+        taskListContainer.appendChild(taskContainer);
+
+        taskContainer.appendChild(taskNameElem);
 
         listElem = document.createElement('ul');
-        container.appendChild(listElem);
-        for(member of task.members) {
+
+        taskContainer.appendChild(listElem);
+        for (member of task.members) {
           memberElem = document.createElement('li');
           memberElem.innerHTML = member;
           listElem.appendChild(memberElem);
