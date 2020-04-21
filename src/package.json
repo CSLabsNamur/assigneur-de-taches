@@ -1,23 +1,36 @@
 {
-  "name": "electron-interface",
+  "name": "assigneur-de-taches",
   "version": "1.0.0",
   "license": "",
   "description": "Interface to use the script",
-  "author": "FrancoisRmn <francois.romain@student.unamur.be>",
+  "author": "CSLabs",
   "main": "interface/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "build": {
-    "appId" : "be.cslabs.app",
-    "directories": {
-      "app": "interface",
-      "output" : "build"
+    "appId": "be.cslabs",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
-    "win" : {
-      "target" : "NSIS",
-      "icon" : "build/icon.ico"
+    "win": {
+      "target": {
+        "target": "portable",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      },
+      "icon": "build/icon.ico"
+    },
+    "directories": {
+      "output": "build"
     }
   },
   "devDependencies": {

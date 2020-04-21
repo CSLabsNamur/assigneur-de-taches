@@ -28,6 +28,10 @@ function openTasksFile() {
   openFile(`\\input\\task.txt`, 'Cannot open tasks file');
 }
 
+function printPDF(){
+  console.log('todo');
+}
+
 function manageOutput() {
   fs.readFile(projectPath + `\\output\\output.json`, (err, data) => {
     if (err) {
