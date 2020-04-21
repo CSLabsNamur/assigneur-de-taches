@@ -1,2 +1,2 @@
-cd script
+cd src
 npm start
