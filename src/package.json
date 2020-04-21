@@ -9,10 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "build": "electron-builder"
   },
   "build": {
     "appId": "be.cslabs",
+    "extraResources": ["./input/**","./script/**"],
     "linux": {
       "target": [
         "AppImage",
@@ -23,20 +24,22 @@
       "target": {
         "target": "portable",
         "arch": [
-          "x64",
-          "ia32"
+          "x64"
         ]
       },
-      "icon": "build/icon.ico"
+      "icon": "assets/icon.ico"
     },
     "directories": {
       "output": "build"
     }
   },
   "devDependencies": {
-    "bootstrap": "^4.4.1",
     "electron": "^8.2.2",
     "electron-builder": "^22.5.1",
     "electron-reload": "^1.5.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jspdf": "^1.5.3"
   }
 }
