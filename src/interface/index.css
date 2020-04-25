@@ -48,3 +48,7 @@
 .lightMode{
 
 }
+
+.pageBreak{
+    page-break-before: after
+}

@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
-const jsPDF = require("jspdf");
+const html2canvas = require('html2canvas');
+const jspdf = require('jspdf');
 const appRoot = path.resolve(__dirname);
 const projectPath = `${appRoot.split("\\interface")[0]}`;
 const exec = require("child_process").exec;
@@ -28,13 +29,7 @@ function openTasksFile() {
   openFile(`\\input\\task.txt`, "Cannot open tasks file");
 }
 
-function printPDF() {
-  let container = document.getElementById("outputContainer");
-  var doc = new jsPDF();
 
-  doc.fromHTML(container);
-  doc.save("membersAssignation.pdf");
-}
 
 function manageOutput() {
   fs.readFile(projectPath + `\\output\\output.json`, (err, data) => {
@@ -87,17 +82,23 @@ function printOutput() {
     let memberElem;
 
     for (period of attributed_task) {
+      periodDiv = document.createElement("page"); 
+      let index = attributed_task.indexOf(period);
+      if((index % 2) == 0 && index != 0)
+        periodDiv.classList.add("pageBreak");
+      container.appendChild(periodDiv);
+
       periodNameElem = document.createElement("h1");
       periodNameElem.innerHTML = strUcFirst(period.period);
       periodNameElem.classList.add("periodName");
       periodNameElem.classList.add("display-4");
 
-      container.appendChild(periodNameElem);
+      periodDiv.appendChild(periodNameElem);
 
       taskListContainer = document.createElement("div");
       taskListContainer.classList.add("taskListContainer");
 
-      container.appendChild(taskListContainer);
+      periodDiv.appendChild(taskListContainer);
 
       for (task of period.tasks) {
         taskNameElem = document.createElement("h2");
