@@ -43,4 +43,15 @@
 .darkMode .btn{
     background-color: #81be6d;
     color:black;
+<<<<<<< HEAD
+=======
+}
+
+.lightMode{
+
+}
+
+.pageBreak{
+    page-break-before: after
+>>>>>>> adcc0458edf606781bb3bc5fcbd0e4fd32e84a2a
 }

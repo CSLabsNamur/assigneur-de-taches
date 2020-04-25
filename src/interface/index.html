@@ -11,6 +11,21 @@
   <script type="text/javascript" src="function.js"></script>
   <script>
     window.addEventListener('load', manageOutput);
+    const html2pdf = require('html2pdf.js');
+    function printPDF() {
+      const element = document.getElementById("outputContainer");
+      const opt = {
+        margin:      [10, 10, 0, 10],
+        pagebreak: { mode: [ 'css']},
+        html2canvas:  { scale: 2, width:750 },
+        filename:     'membersAssignation.pdf',
+      };
+      // Choose the element and save the PDF for our user.
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save();
+    }
   </script>
 </head>
 
