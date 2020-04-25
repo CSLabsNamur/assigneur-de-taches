@@ -14,9 +14,9 @@ function createWindow () {
 
   // et charger le fichier index.html de l'application.
   win.loadFile('interface\\index.html')
-
+  win.removeMenu();
   // Ouvre les DevTools.
-  win.webContents.openDevTools()
+  //win.webContents.openDevTools()
  }
 
 // Cette méthode sera appelée quant Electron aura fini
