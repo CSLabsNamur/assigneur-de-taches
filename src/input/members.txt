@@ -1,6 +1,4 @@
-Romain Francois | vendredi soir, samedi matin
-Bever Maxime
-Member 0
+Member 0 | vendredi soir, samedi matin
 Member 1
 Member 2
 Member 3
@@ -18,3 +16,5 @@ Member 14
 Member 15
 Member 16
 Member 17
+Member 18
+Member 19

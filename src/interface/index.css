@@ -36,13 +36,13 @@
 }
 
 .darkMode{
-    background-color: black;
+    background-color: #1e1e1e;
     color: azure;
 }
 
 .darkMode .btn{
     background-color: #81be6d;
-    color:black;
+    color:#1e1e1e;
 }
 
 .pageBreak{
