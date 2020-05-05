@@ -1,0 +1,50 @@
+#leftBox{
+    margin:2%;
+}
+
+#buttonBox{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#title{
+    margin-top: 1%;
+    text-align: center;
+}
+
+#generateButtonContainer{
+    text-align: center;
+}
+
+.periodName{
+    text-align: center;
+    font-weight: bold;
+}
+
+.taskListContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.taskContainer{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 150%;
+}
+
+.darkMode{
+    background-color: black;
+    color: azure;
+}
+
+.darkMode .btn{
+    background-color: #81be6d;
+    color:black;
+}
+
+.pageBreak{
+    page-break-after: always;
+}

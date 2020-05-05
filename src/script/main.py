@@ -1,78 +1,15 @@
 import random
+import json
+import os
 import const as const
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.config import Config
-from kivy.app import App
-from kivy import require
-
-
-class Main(App):
-    """
-    Main class of the GUI app.
-
-    Inheritance: Kivy.app.App
-    Version: 1.0.0 (03/04/2020)
-    """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.bg_color = "#3d3d3d"
-
-    def build(self):
-        """
-        Main function of the GUI app.
-
-        Version: 1.1.0 (04/04/2020)
-        """
-        self.sm = ScreenManager()
-        self.members = Members(name="Members")
-        self.tasks = Tasks(name="Tasks")
-        self.output = Output(name="Output")
-
-        self.sm.add_widget(self.members)
-        self.sm.add_widget(self.tasks)
-        self.sm.add_widget(self.output)
-
-        return self.sm
-
-
-class Members(Screen):
-    """
-    Members menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
-
-class Tasks(Screen):
-    """
-    Tasks menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
-
-class Output(Screen):
-    """
-    Output menu.
-
-    Inheritance: Kivy.uix.screenmanager.Screen
-    Version: 1.0.0 (03/04/2020)
-    """
-    pass
-
 
 # ====== Logic section ======= #
 def create_output(attributed_tasks):
     """ Create the output file to visualize the information """
 
-    # TODO: L’application génère un pdf avec le programme du week-end : pour chaque moment et pour chaque tâche,
-    #  qui doit la réaliser
-
-    with open(const.f_path_output, "w") as file_output:
+    #Output TXT
+    os.makedirs(os.path.dirname(const.f_path_output_txt), exist_ok=True)
+    with open(const.f_path_output_txt, "w") as file_output:
         for period in attributed_tasks:
             file_output.write("==================== " + period["period"].upper() + " ====================\n")
             for task in period["tasks"]:
@@ -80,6 +17,11 @@ def create_output(attributed_tasks):
                 file_output.write(
                     "Members : " + ", ".join([str(x) for x in task["members"]]) + "\n\n")
 
+        file_output.close()
+        
+    #Output JSON
+    with open(const.f_path_output_json, "w") as file_output:
+        file_output.write(json.dumps(attributed_tasks))
         file_output.close()
 
 
@@ -138,14 +80,20 @@ def choose_member(task_name, period, members, member_periods_prec):
         if len(member_available["tasks"]) > mean_nb_task:
             members_available.remove(member_available)
     if len(members_available) == 0:
-        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la période: {period}")
+        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la periode: {period}")
     # Évite un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
-    # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
     members_available_not_in_row = members_available.copy()
     for member_not_in_row in members_available:
-        if (member_not_in_row["name"] in member_periods_prec) or (task_name in member_not_in_row["tasks"]):
+        if (member_not_in_row["name"] in member_periods_prec):
             members_available_not_in_row.remove(member_not_in_row)
+    # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
+    members_available_avoid_same_task = members_available_not_in_row.copy()
+    for member in members_available_not_in_row:
+        if (task_name in member["tasks"]):
+            members_available_avoid_same_task.remove(member)
 
+    if len(members_available_avoid_same_task) != 0:
+        return random.choice(members_available_avoid_same_task)
     if len(members_available_not_in_row) == 0:
         return random.choice(members_available)
     else:
@@ -187,8 +135,4 @@ def assign_tasks():
     create_output(attributed_tasks)
 
 
-if __name__ == "__main__":
-    require("1.11.1")
-    Config.set('input', 'mouse', 'mouse,disable_multitouch')
-
-    Main().run()
+assign_tasks()

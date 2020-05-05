@@ -1,0 +1,32 @@
+node_modules/
+**/package-lock.json
+
+# npm package
+/npm/dist
+/npm/path.txt
+
+.npmrc
+
+# Generated API definitions
+electron-api.json
+electron.d.ts
+
+# Spec hash calculation
+spec/.hash
+
+# Eslint Cache
+.eslintcache
+
+# Generated native addon files
+/spec-main/fixtures/native-addon/echo/build/
+
+# If someone runs tsc this is where stuff will end up
+ts-gen
+
+# Used to accelerate CI builds
+.depshash
+.depshash-target
+
+output/
+__pycache__/
+build/

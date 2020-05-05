@@ -1,6 +1,6 @@
 Cuisine 4
 vendredi soir, samedi matin, samedi midi, samedi soir, dimanche matin, dimanche midi
-Vaiselle 6
+Vaisselle 6
 vendredi soir, samedi matin, samedi midi, samedi soir, dimanche matin, dimanche midi
 Barbecue 5
 samedi soir

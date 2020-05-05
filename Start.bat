@@ -1,2 +1,2 @@
 cd src
-python main.py
+npm start
