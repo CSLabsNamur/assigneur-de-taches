@@ -9,7 +9,7 @@ const exec = require("child_process").exec;
 function openFile(file, message, fct) {
   exec(projectPath + file, (err, stdout, stderr) => {
     if (err) {
-      alert(message);
+      alert(`${message} ${err}`);
       console.log(err);
       return;
     }
@@ -82,10 +82,13 @@ function printOutput() {
     let memberElem;
 
     for (period of attributed_task) {
-      periodDiv = document.createElement("page"); 
+      periodDiv = document.createElement("div"); 
       let index = attributed_task.indexOf(period);
-      if((index % 2) == 0 && index != 0)
-        periodDiv.classList.add("pageBreak");
+      if ((index % 2) == 0 && index != 0) {
+        pageBreakDiv = document.createElement("div"); 
+        pageBreakDiv.classList.add("pageBreak");
+        container.appendChild(pageBreakDiv);
+      }
       container.appendChild(periodDiv);
 
       periodNameElem = document.createElement("h1");

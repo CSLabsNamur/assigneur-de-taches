@@ -80,14 +80,20 @@ def choose_member(task_name, period, members, member_periods_prec):
         if len(member_available["tasks"]) > mean_nb_task:
             members_available.remove(member_available)
     if len(members_available) == 0:
-        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la période: {period}")
+        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la periode: {period}")
     # Évite un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
-    # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
     members_available_not_in_row = members_available.copy()
     for member_not_in_row in members_available:
-        if (member_not_in_row["name"] in member_periods_prec) or (task_name in member_not_in_row["tasks"]):
+        if (member_not_in_row["name"] in member_periods_prec):
             members_available_not_in_row.remove(member_not_in_row)
+    # Et essayer d’éviter qu’une personne fasse plusieurs fois la même tâche
+    members_available_avoid_same_task = members_available_not_in_row.copy()
+    for member in members_available_not_in_row:
+        if (task_name in member["tasks"]):
+            members_available_avoid_same_task.remove(member)
 
+    if len(members_available_avoid_same_task) != 0:
+        return random.choice(members_available_avoid_same_task)
     if len(members_available_not_in_row) == 0:
         return random.choice(members_available)
     else:
