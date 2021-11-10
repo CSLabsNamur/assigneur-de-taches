@@ -50,7 +50,7 @@ def get_tasks_and_occurrences():
         occurrences = []
         line = [x.strip() for x in data_tasks.readline().split()]
         while line:
-            occurrence = [x.strip() for x in data_tasks.readline().split(", ")]
+            occurrence = [x.strip() for x in data_tasks.readline().split(",")]
             tasks.append({
                 "name": line[0],
                 "person": line[1],
@@ -80,7 +80,8 @@ def choose_member(task_name, period, members, member_periods_prec):
         if len(member_available["tasks"]) > mean_nb_task:
             members_available.remove(member_available)
     if len(members_available) == 0:
-        raise Exception(f"Pas assez de membres pours assigner toutes les taches de la periode: {period}")
+        return None
+        # raise Exception(f"Pas assez de membres pours assigner toutes les taches de la periode: {period}")
     # Évite un maximum qu’une personne fasse plusieurs tâches d’affilée si il y a assez de membres
     members_available_not_in_row = members_available.copy()
     for member_not_in_row in members_available:
@@ -103,6 +104,11 @@ def choose_member(task_name, period, members, member_periods_prec):
 def assign_tasks():
     """ Assign tasks to the members """
     members = get_members()
+    # members.append({
+    #     "name": "???",
+    #     "tasks": [],
+    #     "occurrence": occurrence
+    # })
     tuple_tasks_occurrences = get_tasks_and_occurrences()
     periods_info = tuple_tasks_occurrences[1]
     tasks = tuple_tasks_occurrences[0]
@@ -114,13 +120,15 @@ def assign_tasks():
         for task in tasks:
             if period in task["occurrence"]:
                 temp_members = []
-                i = 0
-                while i < int(task["person"]):
+                for _ in range(int(task["person"])):
                     member = choose_member(task["name"], period, members, member_period_prec)
-                    members[members.index(member)]["tasks"].append(task["name"])
-                    members[members.index(member)]["occurrence"].append(period)
-                    temp_members.append(member["name"])
-                    i += 1
+                    try:
+                        member_index = members.index(member)
+                        members[member_index]["tasks"].append(task["name"])
+                        members[member_index]["occurrence"].append(period)
+                        temp_members.append(member["name"])
+                    except ValueError:
+                        temp_members.append("???")
                 temp_task.append({
                     "name": task["name"],
                     "members": temp_members
